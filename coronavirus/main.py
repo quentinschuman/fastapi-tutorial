@@ -58,10 +58,47 @@ def create_data_for_city(city: str, data: schemas.CreateData, db: Session = Depe
     return data
 
 
+@application.post("/create_log", response_model=schemas.ReadLog)
+def create_log(log: schemas.CreateLog, db: Session = Depends(get_db)):
+    return crud.create_log(db=db, file_name=log.file_name, method_name=log.method_name)
+
+
+@application.get("/get_log_by_id")
+def get_log_by_id(id: int = None, db: Session = Depends(get_db)):
+    return crud.get_log_by_id(db, id=id)
+
+
+@application.get("/get_log_by_file_name")
+def get_log_by_file_name(file_name: str = None, db: Session = Depends(get_db)):
+    return crud.get_log_by_file_name(db, file_name=file_name)
+
+
+@application.get("/get_log_by_method_name")
+def get_log_by_method_name(method_name: str = None, db: Session = Depends(get_db)):
+    return crud.get_log_by_method_name(db, method_name=method_name)
+
+
 @application.get("/get_data")
 def get_data(city: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     data = crud.get_data(db, city=city, skip=skip, limit=limit)
     return data
+
+
+@application.get("/get_data_by_country")
+def get_data_by_country(country: str = None, db: Session = Depends(get_db)):
+    data = crud.get_data_by_country(db, country=country)
+    return data
+
+
+@application.get("/get_data_by_country_code")
+def get_data_by_country_code(country_code: str = None, db: Session = Depends(get_db)):
+    data = crud.get_data_by_country_code(db, country_code=country_code)
+    return data
+
+
+@application.get("/get_data_by_city_id")
+def get_data_by_city_id(id: str, db: Session = Depends(get_db)):
+    return crud.get_data_by_city_id(db, id=id)
 
 
 def bg_task(url: HttpUrl, db: Session):

@@ -47,6 +47,22 @@ class Data(Base):
         return f'{repr(self.date)}：确诊{self.confirmed}例'
 
 
+class Log(Base):
+    __tablename__ = "log"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    file_name = Column(String(64), nullable=False, comment="文件名")
+    method_name = Column(String(64), comment="方法名")
+
+    created_at = Column(DateTime, server_default=func.now(), comment="创建时间")
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), comment="更新时间")
+
+    __mapper_args__ = {"order_by": id.desc()}  # 按id降序排列
+
+    def __repr__(self):
+        return f'记录[{repr(self.file_name)}]文件中[{repr(self.method_name)}]方法'
+
+
 """ 附上三个SQLAlchemy教程
 
 SQLAlchemy的基本操作大全 

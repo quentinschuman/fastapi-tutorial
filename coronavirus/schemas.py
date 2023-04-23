@@ -22,6 +22,11 @@ class CreateCity(BaseModel):
     country_population: int
 
 
+class CreateLog(BaseModel):
+    file_name: str
+    method_name: str
+
+
 class ReadData(CreateData):
     id: int
     city_id: int
@@ -33,6 +38,15 @@ class ReadData(CreateData):
 
 
 class ReadCity(CreateCity):
+    id: int
+    updated_at: datetime
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class ReadLog(CreateLog):
     id: int
     updated_at: datetime
     created_at: datetime
